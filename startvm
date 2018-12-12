@@ -21,7 +21,9 @@
 : ${KVM_OPTS:="\
   -nodefaults \
   -vnc 0.0.0.0:0 \
+  -usbdevice tablet
   -device virtio-balloon-pci,id=balloon0 \
+  -drive file=/image/drv.iso,media=cdrom,index=1 \
   -realtime mlock=off \
   -msg timestamp=on \
   -chardev pty,id=charserial0 \
@@ -30,7 +32,7 @@
   "}
   # -serial telnet::4555,server,nowait \
 
-: ${KVM_CPU_OPTS:="-m 1024 -smp 4,sockets=4,cores=1,threads=1"}
+: ${KVM_CPU_OPTS:="-m 1024 -smp 1,sockets=1,cores=1,threads=1"}
 
 log () {
   case "$1" in
@@ -270,10 +272,10 @@ configureNetworks () {
 #enable KVM support onl if the host supports it
 if [[ $(grep -e vmx -e svm /proc/cpuinfo) ]]; then
   log "INFO" "KVM acceleration enabled"
-  KVM_OPTS="$KVM_OPTS -enable-kvm -machine accel=kvm,usb=off "
+  KVM_OPTS="$KVM_OPTS -enable-kvm -machine accel=kvm,usb=on "
 else
   log "INFO" "KVM acceleration disabled"
-  KVM_OPTS="$KVM_OPTS -machine usb=off "
+  KVM_OPTS="$KVM_OPTS -machine usb=on "
 fi
 
 # Debugging mode
@@ -372,3 +374,4 @@ fi
 log "INFO" "Launching qemu-kvm"
 log "DEBUG" "Launching $LAUNCHER $KVM_BLK_OPTS $KVM_OPTS $KVM_VIDEO_OPTS $KVM_CPU_OPTS $KVM_ARGS $@ $KVM_NET_OPTS"
 eval exec $LAUNCHER $KVM_BLK_OPTS $KVM_OPTS $KVM_VIDEO_OPTS $KVM_CPU_OPTS "$@" $KVM_NET_OPTS
+
