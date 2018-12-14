@@ -21,7 +21,7 @@
 : ${KVM_OPTS:="\
   -nodefaults \
   -vnc 0.0.0.0:0 \
-  -usbdevice tablet
+  -usbdevice tablet \
   -device virtio-balloon-pci,id=balloon0 \
   -drive file=/image/drv.iso,media=cdrom,index=1 \
   -realtime mlock=off \
@@ -33,6 +33,9 @@
   # -serial telnet::4555,server,nowait \
 
 : ${KVM_CPU_OPTS:="-m 1024 -smp 1,sockets=1,cores=1,threads=1"}
+
+# Environment set
+export SPICE_DEBUG_ALLOW_MC=1
 
 log () {
   case "$1" in
