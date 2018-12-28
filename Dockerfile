@@ -10,6 +10,7 @@ RUN yum clean all \
 COPY startvm /usr/local/bin/startvm
 RUN chmod u+x /usr/local/bin/startvm
 
+ENV DNS_SERVERS=114.114.114.114
 VOLUME /image
 
 ENTRYPOINT ["/usr/local/bin/startvm"]
