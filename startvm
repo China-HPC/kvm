@@ -39,7 +39,8 @@
   -chardev spicevmc,name=usbredir,id=usbredirchardev2 \
   -device usb-redir,chardev=usbredirchardev2,id=usbredirdev2 \
   -chardev spicevmc,name=usbredir,id=usbredirchardev3 \
-  -device usb-redir,chardev=usbredirchardev3,id=usbredirdev3"
+  -device usb-redir,chardev=usbredirchardev3,id=usbredirdev3 \
+  -soundhw ac97"
 }
   # -serial telnet::4555,server,nowait \
 
@@ -47,7 +48,7 @@
 
 # Environment set
 export SPICE_DEBUG_ALLOW_MC=1
-
+export QEMU_AUDIO_DRV=spice
 log () {
   case "$1" in
     INFO | WARNING | ERROR )
